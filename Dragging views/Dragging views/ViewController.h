@@ -13,3 +13,10 @@
 
 @end
 
+@interface DraggingModel: NSObject
+
+@property (nonatomic, strong) NSString *imageName;
+@property (nonatomic, strong) NSString *title;
+
+@end
+
