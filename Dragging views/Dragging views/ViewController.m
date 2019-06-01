@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SelectionViewController.h"
 
 @interface DraggingView : UIView
 
@@ -109,7 +110,7 @@
                                             action:@selector(handleTapSelfView:)];
     [self.view addGestureRecognizer:tapSelfView];
     
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"+" style:UIBarButtonItemStylePlain target:self action:@selector(nextview)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"+" style:UIBarButtonItemStylePlain target:self action:@selector(nextView)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
 }
@@ -137,7 +138,8 @@
 }
 
 -(void)nextView {
-    
+    SelectionViewController *vc = [SelectionViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8CA7D4622A2A98100B9D09C /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CA7D4422A2A98100B9D09C /* SelectionViewController.m */; };
+		F8CA7D4722A2A98100B9D09C /* SelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8CA7D4522A2A98100B9D09C /* SelectionViewController.xib */; };
 		F8FDF2F222A264160029BFBA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF2F122A264160029BFBA /* AppDelegate.m */; };
 		F8FDF2F522A264160029BFBA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF2F422A264160029BFBA /* ViewController.m */; };
 		F8FDF2F822A264160029BFBA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF2F622A264160029BFBA /* Main.storyboard */; };
@@ -35,6 +37,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F8CA7D4322A2A98100B9D09C /* SelectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
+		F8CA7D4422A2A98100B9D09C /* SelectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
+		F8CA7D4522A2A98100B9D09C /* SelectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectionViewController.xib; sourceTree = "<group>"; };
 		F8FDF2ED22A264160029BFBA /* Dragging views.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dragging views.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8FDF2F022A264160029BFBA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F8FDF2F122A264160029BFBA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -107,6 +112,9 @@
 				F8FDF2F422A264160029BFBA /* ViewController.m */,
 				F8FDF2F622A264160029BFBA /* Main.storyboard */,
 				F8FDF2F922A264180029BFBA /* Assets.xcassets */,
+				F8CA7D4322A2A98100B9D09C /* SelectionViewController.h */,
+				F8CA7D4422A2A98100B9D09C /* SelectionViewController.m */,
+				F8CA7D4522A2A98100B9D09C /* SelectionViewController.xib */,
 				F8FDF2FB22A264180029BFBA /* LaunchScreen.storyboard */,
 				F8FDF2FE22A264180029BFBA /* Info.plist */,
 				F8FDF2FF22A264180029BFBA /* main.m */,
@@ -236,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8FDF2FD22A264180029BFBA /* LaunchScreen.storyboard in Resources */,
+				F8CA7D4722A2A98100B9D09C /* SelectionViewController.xib in Resources */,
 				F8FDF2FA22A264180029BFBA /* Assets.xcassets in Resources */,
 				F8FDF2F822A264160029BFBA /* Main.storyboard in Resources */,
 			);
@@ -263,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8FDF2F522A264160029BFBA /* ViewController.m in Sources */,
+				F8CA7D4622A2A98100B9D09C /* SelectionViewController.m in Sources */,
 				F8FDF30022A264180029BFBA /* main.m in Sources */,
 				F8FDF2F222A264160029BFBA /* AppDelegate.m in Sources */,
 			);
