@@ -57,16 +57,16 @@
      ];
     
     float topAnchor = 0;
-    for (int i = 0; i < 30; i++) {
-        CGFloat height = [self addNextView:i topAnchor:topAnchor];
+    for (DraggingModel *model in self.listViews) {
+        CGFloat height = [self addNextView:model topAnchor:topAnchor];
         topAnchor += height;
     }
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, topAnchor);
 }
 
-- (CGFloat)addNextView:(int)i topAnchor:(float)top {
+- (CGFloat)addNextView:(DraggingModel *)model topAnchor:(float)top {
     ListView *listView = [ListView new];
-    listView.model = self.listViews[i];
+    listView.model = model;
     listView.layer.borderColor = [UIColor blackColor].CGColor;
     listView.layer.borderWidth = 1.f;
     [self.scrollView addSubview:listView];
@@ -109,10 +109,22 @@
                                               [listView.heightAnchor constraintEqualToConstant:height + margin + 44]
                                               ]
      ];
+    
+    UITapGestureRecognizer *tap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleTap:)];
+    [listView addGestureRecognizer:tap];
+    
      return height + 2 * margin + 44;
 }
 
 - (void)close {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)recognizer {
+    ListView *listView = (ListView *) recognizer.view;
+    [self.delegate selectionViewControllerDelegateMethod: listView.model];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

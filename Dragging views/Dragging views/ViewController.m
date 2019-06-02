@@ -41,7 +41,7 @@
 
 @end
 
-@interface ViewController ()
+@interface ViewController () <SelectionViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray * draggingViews;
 
@@ -149,8 +149,19 @@
 
 -(void)nextView {
     SelectionViewController *vc = [[SelectionViewController alloc] initWithNibName:@"SelectionViewController" bundle:nil];
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+-(void)selectionViewControllerDelegateMethod:(DraggingModel *)model {
+    DraggingView *draggingView = [[DraggingView alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
+    draggingView.model = model;
+    CGPoint newCenter = draggingView.center;
+    newCenter.x = self.view.center.x;
+    newCenter.y = self.view.center.y;
+    draggingView.center = newCenter;
+    [self.draggingViews addObject:draggingView];
+    [self.view addSubview:draggingView];
+}
 
 @end

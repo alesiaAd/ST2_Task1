@@ -7,8 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
+
+@class SelectionViewController;
+@protocol SelectionViewControllerDelegate <NSObject>
+
+- (void) selectionViewControllerDelegateMethod: (DraggingModel *) model;
+
+@end
 
 @interface SelectionViewController : UIViewController
+
+@property (nonatomic, weak) id <SelectionViewControllerDelegate> delegate;
 
 @end
 
