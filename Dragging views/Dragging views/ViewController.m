@@ -29,6 +29,16 @@
 
 @implementation DraggingModel
 
+-(id)initWithImageName:(NSString *)imageName andTitle:(NSString *)title
+{
+    self = [super init];
+    if (self) {
+        self.imageName = imageName;
+        self.title = title;
+    }
+    return self;
+}
+
 @end
 
 @interface ViewController ()

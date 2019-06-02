@@ -18,5 +18,7 @@
 @property (nonatomic, strong) NSString *imageName;
 @property (nonatomic, strong) NSString *title;
 
+-(id)initWithImageName:(NSString *)imageName andTitle:(NSString *)title;
+
 @end
 
