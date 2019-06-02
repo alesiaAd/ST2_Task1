@@ -138,7 +138,7 @@
 }
 
 -(void)nextView {
-    SelectionViewController *vc = [SelectionViewController new];
+    SelectionViewController *vc = [[SelectionViewController alloc] initWithNibName:@"SelectionViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
