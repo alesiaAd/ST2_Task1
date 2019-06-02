@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.listViews addObject:[[DraggingModel alloc] initWithImageName:@"dog1" andTitle:@"https://loremflickr.com/cache/resized/65535_32744905647_da43bb2fce_320_240_nofilter.jpg"]];
+    self.listViews = [[self makeDataArray] mutableCopy];
     
     self.title = @"Select item";
     self.navigationItem.hidesBackButton = YES;
@@ -56,12 +56,19 @@
         ]
      ];
     
-    DraggingModel* model = [DraggingModel new];
-    model.imageName = @"dog1";
-    model.title = @"dog";
-    
+    float topAnchor = 0;
+    for (int i = 0; i < 30; i++) {
+        CGFloat height = [self addNextView:i topAnchor:topAnchor];
+        topAnchor += height;
+    }
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, topAnchor);
+}
+
+- (CGFloat)addNextView:(int)i topAnchor:(float)top {
     ListView *listView = [ListView new];
-    listView.model = model;
+    listView.model = self.listViews[i];
+    listView.layer.borderColor = [UIColor blackColor].CGColor;
+    listView.layer.borderWidth = 1.f;
     [self.scrollView addSubview:listView];
     
     listView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -69,13 +76,16 @@
     listView.imgView = [UIView new];
     [listView addSubview:listView.imgView];
     
+    CGFloat height = [UIImage imageNamed:listView.model.imageName].size.height;
+    CGFloat width = [UIImage imageNamed:listView.model.imageName].size.width;
+    CGFloat margin = 10;
+    
     listView.imgView.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLog(@"%f", [UIImage imageNamed:listView.model.imageName].size.height);
     [NSLayoutConstraint activateConstraints:@[
                                               [listView.imgView.leadingAnchor constraintEqualToAnchor:listView.leadingAnchor],
                                               [listView.imgView.topAnchor constraintEqualToAnchor:listView.topAnchor],
-                                              [listView.imgView.widthAnchor constraintEqualToConstant:[UIImage imageNamed:listView.model.imageName].size.width],
-                                              [listView.imgView.heightAnchor constraintEqualToConstant:[UIImage imageNamed:listView.model.imageName].size.height]
+                                              [listView.imgView.widthAnchor constraintEqualToConstant:width],
+                                              [listView.imgView.heightAnchor constraintEqualToConstant:height]
                                               ]
      ];
     
@@ -86,26 +96,27 @@
     listView.descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
                                               [listView.descriptionLabel.leadingAnchor constraintEqualToAnchor:listView.leadingAnchor],
-                                              [listView.descriptionLabel.topAnchor constraintEqualToAnchor:listView.imgView.bottomAnchor constant:20],
+                                              [listView.descriptionLabel.topAnchor constraintEqualToAnchor:listView.imgView.bottomAnchor constant:margin],
                                               [listView.descriptionLabel.widthAnchor constraintEqualToAnchor:listView.imgView.widthAnchor multiplier:1],
                                               [listView.descriptionLabel.heightAnchor constraintEqualToConstant:44]
                                               ]
      ];
     
     [NSLayoutConstraint activateConstraints:@[
-                                              [listView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
-                                              [listView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
+                                              [listView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor constant:margin],
+                                              [listView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor constant:top + margin],
                                               [listView.widthAnchor constraintEqualToAnchor:listView.imgView.widthAnchor multiplier:1],
-                                              [listView.heightAnchor constraintEqualToConstant:[UIImage imageNamed:listView.model.imageName].size.height + 20 + 44]
+                                              [listView.heightAnchor constraintEqualToConstant:height + margin + 44]
                                               ]
      ];
+     return height + 2 * margin + 44;
 }
 
 - (void)close {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(NSArray *)makeDataArray {
+- (NSArray *)makeDataArray {
     NSMutableArray *dataArray = [[NSMutableArray new] mutableCopy];
     [dataArray addObject:[[DraggingModel alloc] initWithImageName:@"dog1" andTitle:@"https://loremflickr.com/cache/resized/65535_32744905647_da43bb2fce_320_240_nofilter.jpg"]];
     [dataArray addObject:[[DraggingModel alloc] initWithImageName:@"dog2" andTitle:@"https://loremflickr.com/cache/resized/4911_46959780851_58738a2083_320_240_nofilter.jpg"]];
@@ -137,7 +148,7 @@
     [dataArray addObject:[[DraggingModel alloc] initWithImageName:@"dog28" andTitle:@"https://loremflickr.com/cache/resized/7858_40266472703_604807ec41_320_240_nofilter.jpg"]];
     [dataArray addObject:[[DraggingModel alloc] initWithImageName:@"dog29" andTitle:@"https://loremflickr.com/cache/resized/65535_47811664471_c782a7682d_320_240_nofilter.jpg"]];
     [dataArray addObject:[[DraggingModel alloc] initWithImageName:@"dog30" andTitle:@"https://loremflickr.com/cache/resized/7827_47330082201_233bab7f38_320_240_nofilter.jpg"]];
-    return dataArray;
+    return [dataArray copy];
 }
 
 @end
