@@ -124,7 +124,7 @@
 
 - (void)handleTap:(UITapGestureRecognizer *)recognizer {
     ListView *listView = (ListView *) recognizer.view;
-    [self.delegate selectionViewControllerDelegateMethod: listView.model];
+    [self.delegate addModel: listView.model];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

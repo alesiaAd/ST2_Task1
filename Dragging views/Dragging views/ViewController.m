@@ -52,6 +52,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Dragging views";
+    
     UITapGestureRecognizer *tapSelfView =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleTapSelfView:)];
@@ -60,19 +62,6 @@
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"+" style:UIBarButtonItemStylePlain target:self action:@selector(nextView)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
-}
-
-- (void)handlePan:(UIPanGestureRecognizer *)recognizer {
-    DraggingView *draggingView = (DraggingView *)recognizer.view;
-    self.title = draggingView.model.title;
-    [self.view bringSubviewToFront:draggingView];
-    CGPoint translatedPoint = [recognizer translationInView:draggingView.superview];
-    CGPoint location = [recognizer locationInView:draggingView.superview];
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        draggingView.center = location;
-    }
-    draggingView.center = CGPointMake(draggingView.center.x + translatedPoint.x, draggingView.center.y +translatedPoint.y);
-    [recognizer setTranslation:CGPointZero inView:draggingView.superview];
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)recognizer {
@@ -90,7 +79,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)selectionViewControllerDelegateMethod:(DraggingModel *)model {
+-(void)addModel:(DraggingModel *)model {
     DraggingView *draggingView = [[DraggingView alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
     draggingView.model = model;
     CGPoint newCenter = draggingView.center;
@@ -100,15 +89,33 @@
     [self.draggingViews addObject:draggingView];
     [self.view addSubview:draggingView];
     
-    UIPanGestureRecognizer *pan =
-    [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handlePan:)];
-    [draggingView addGestureRecognizer:pan];
-    
     UITapGestureRecognizer *tap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleTap:)];
     [draggingView addGestureRecognizer:tap];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSSet *allTouches = [event allTouches];
+    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
+    CGPoint touchLocation = [touch locationInView:self.view];
+    if (touch.view == self.view) {
+        self.title = @"Dragging views";
+        return;
+    }
+    DraggingView *draggingView = (DraggingView *)touch.view;
+    self.title = draggingView.model.title;
+    [self.view bringSubviewToFront:draggingView];
+    draggingView.center = touchLocation;
+}
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSSet *allTouches = [event allTouches];
+    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
+    CGPoint touchLocation = [touch locationInView:self.view];
+    if (touch.view == self.view) {
+        return;
+    }
+    touch.view.center = touchLocation;
 }
 
 @end
