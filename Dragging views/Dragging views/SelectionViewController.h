@@ -12,7 +12,7 @@
 @class SelectionViewController;
 @protocol SelectionViewControllerDelegate <NSObject>
 
-- (void) addModel: (DraggingModel *) model;
+- (void) addDraggingViewWithModel: (DraggingModel *) model;
 
 @end
 

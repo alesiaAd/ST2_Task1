@@ -12,7 +12,6 @@
 @interface ListView : UIView
 
 @property (nonatomic, strong) DraggingModel *model;
-@property (nonatomic, strong) UIView *imgView;
 @property (nonatomic, strong) UILabel *descriptionLabel;
 
 @end
@@ -22,7 +21,7 @@
 - (void)drawRect:(CGRect)rect
 {
     UIImage *natureImage = [UIImage imageNamed:self.model.imageName];
-    CGRect natureImageRect = self.imgView.bounds;
+    CGRect natureImageRect = CGRectMake(0, 0, natureImage.size.width, natureImage.size.height);
     [natureImage drawInRect:natureImageRect];
 }
 
@@ -31,7 +30,7 @@
 @interface SelectionViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, strong) NSMutableArray * listViews;
+@property (nonatomic, strong) NSMutableArray * models;
 
 @end
 
@@ -40,7 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.listViews = [[self makeDataArray] mutableCopy];
+    self.models = [[self makeDataArray] mutableCopy];
     
     self.title = @"Select item";
     self.navigationItem.hidesBackButton = YES;
@@ -56,15 +55,17 @@
         ]
      ];
     
-    float topAnchor = 0;
-    for (DraggingModel *model in self.listViews) {
-        CGFloat height = [self addNextView:model topAnchor:topAnchor];
-        topAnchor += height;
+    CGFloat topAnchor = 0;
+    CGFloat width = 0;
+    for (DraggingModel *model in self.models) {
+        CGSize viewSize = [self addNextView:model topAnchor:topAnchor width: width];
+        topAnchor += viewSize.height;
+        width = viewSize.width;
     }
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, topAnchor);
+    self.scrollView.contentSize = CGSizeMake(width, topAnchor);
 }
 
-- (CGFloat)addNextView:(DraggingModel *)model topAnchor:(float)top {
+- (CGSize)addNextView:(DraggingModel *)model topAnchor:(float)top width:(CGFloat)width{
     ListView *listView = [ListView new];
     listView.model = model;
     listView.layer.borderColor = [UIColor blackColor].CGColor;
@@ -73,21 +74,9 @@
     
     listView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    listView.imgView = [UIView new];
-    [listView addSubview:listView.imgView];
-    
-    CGFloat height = [UIImage imageNamed:listView.model.imageName].size.height;
-    CGFloat width = [UIImage imageNamed:listView.model.imageName].size.width;
+    CGFloat imgHeight = [UIImage imageNamed:listView.model.imageName].size.height;
+    CGFloat imgWidth = [UIImage imageNamed:listView.model.imageName].size.width;
     CGFloat margin = 10;
-    
-    listView.imgView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-                                              [listView.imgView.leadingAnchor constraintEqualToAnchor:listView.leadingAnchor],
-                                              [listView.imgView.topAnchor constraintEqualToAnchor:listView.topAnchor],
-                                              [listView.imgView.widthAnchor constraintEqualToConstant:width],
-                                              [listView.imgView.heightAnchor constraintEqualToConstant:height]
-                                              ]
-     ];
     
     listView.descriptionLabel = [UILabel new];
     listView.descriptionLabel.text = listView.model.title;
@@ -96,8 +85,8 @@
     listView.descriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
                                               [listView.descriptionLabel.leadingAnchor constraintEqualToAnchor:listView.leadingAnchor],
-                                              [listView.descriptionLabel.topAnchor constraintEqualToAnchor:listView.imgView.bottomAnchor constant:margin],
-                                              [listView.descriptionLabel.widthAnchor constraintEqualToAnchor:listView.imgView.widthAnchor multiplier:1],
+                                              [listView.descriptionLabel.topAnchor constraintEqualToAnchor:listView.topAnchor constant:imgHeight + margin],
+                                              [listView.descriptionLabel.trailingAnchor constraintEqualToAnchor:listView.trailingAnchor],
                                               [listView.descriptionLabel.heightAnchor constraintEqualToConstant:44]
                                               ]
      ];
@@ -105,8 +94,8 @@
     [NSLayoutConstraint activateConstraints:@[
                                               [listView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor constant:margin],
                                               [listView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor constant:top + margin],
-                                              [listView.widthAnchor constraintEqualToAnchor:listView.imgView.widthAnchor multiplier:1],
-                                              [listView.heightAnchor constraintEqualToConstant:height + margin + 44]
+                                              [listView.widthAnchor constraintEqualToConstant:imgWidth],
+                                              [listView.heightAnchor constraintEqualToConstant:imgHeight + margin + 44]
                                               ]
      ];
     
@@ -115,7 +104,12 @@
                                             action:@selector(handleTap:)];
     [listView addGestureRecognizer:tap];
     
-     return height + 2 * margin + 44;
+    if(imgWidth > width) {
+        return CGSizeMake(imgWidth, imgHeight + 2 * margin + 44);
+    }
+    else {
+        return CGSizeMake(width, imgHeight + 2 * margin + 44);
+    }
 }
 
 - (void)close {
@@ -124,7 +118,7 @@
 
 - (void)handleTap:(UITapGestureRecognizer *)recognizer {
     ListView *listView = (ListView *) recognizer.view;
-    [self.delegate addModel: listView.model];
+    [self.delegate addDraggingViewWithModel: listView.model];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

@@ -59,7 +59,7 @@
                                             action:@selector(handleTapSelfView:)];
     [self.view addGestureRecognizer:tapSelfView];
     
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"+" style:UIBarButtonItemStylePlain target:self action:@selector(nextView)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"+" style:UIBarButtonItemStylePlain target:self action:@selector(showSecondController)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
 }
@@ -73,13 +73,13 @@
     self.title = @"Dragging views";
 }
 
--(void)nextView {
+-(void)showSecondController {
     SelectionViewController *vc = [[SelectionViewController alloc] initWithNibName:@"SelectionViewController" bundle:nil];
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)addModel:(DraggingModel *)model {
+-(void)addDraggingViewWithModel:(DraggingModel *)model {
     DraggingView *draggingView = [[DraggingView alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
     draggingView.model = model;
     CGPoint newCenter = draggingView.center;
@@ -97,7 +97,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSSet *allTouches = [event allTouches];
-    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
+    UITouch *touch = [[allTouches allObjects] firstObject];
     CGPoint touchLocation = [touch locationInView:self.view];
     if (touch.view == self.view) {
         self.title = @"Dragging views";
@@ -110,7 +110,7 @@
 }
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     NSSet *allTouches = [event allTouches];
-    UITouch *touch = [[allTouches allObjects] objectAtIndex:0];
+    UITouch *touch = [[allTouches allObjects] firstObject];
     CGPoint touchLocation = [touch locationInView:self.view];
     if (touch.view == self.view) {
         return;
