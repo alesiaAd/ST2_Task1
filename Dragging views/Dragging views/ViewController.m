@@ -51,69 +51,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    DraggingModel* model = [DraggingModel new];
-    model.imageName = @"dog1";
-    model.title = @"dog1";
-    
-    DraggingView *draggingView = [[DraggingView alloc] initWithFrame:CGRectMake(0, 0, 88, 88)];
-    draggingView.model = model;
-    [self.view addSubview:draggingView];
-    
-    [self.draggingViews addObject:model];
-    
-    DraggingModel* model2 = [DraggingModel new];
-    model2.imageName = @"dog2";
-    model2.title = @"dog2";
-    
-    DraggingView *draggingView2 = [[DraggingView alloc] initWithFrame:CGRectMake(100, 100, 88, 88)];
-    draggingView2.model = model2;
-    [self.view addSubview:draggingView2];
-    
-    [self.draggingViews addObject:model2];
-    
-    DraggingModel* model3 = [DraggingModel new];
-    model3.imageName = @"dog1";
-    model3.title = @"dog1";
-    
-    DraggingView *draggingView3 = [[DraggingView alloc] initWithFrame:CGRectMake(110, 200, 88, 88)];
-    draggingView3.model = model3;
-    [self.view addSubview:draggingView3];
-    
-    [self.draggingViews addObject:model3];
-    
-    UIPanGestureRecognizer *pan =
-    [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handlePan:)];
-    [draggingView addGestureRecognizer:pan];
-    
-    UIPanGestureRecognizer *pan2 =
-    [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handlePan:)];
-    [draggingView2 addGestureRecognizer:pan2];
-    
-    UIPanGestureRecognizer *pan3 =
-    [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handlePan:)];
-    [draggingView3 addGestureRecognizer:pan3];
-    
-    self.draggingViews = [NSMutableArray new];
-    self.title = @"Dragging views";
-    
-    UITapGestureRecognizer *tap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handleTap:)];
-    [draggingView addGestureRecognizer:tap];
-    
-    UITapGestureRecognizer *tap2 =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handleTap:)];
-    [draggingView2 addGestureRecognizer:tap2];
-    
-    UITapGestureRecognizer *tap3 =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handleTap:)];
-    [draggingView3 addGestureRecognizer:tap3];
     
     UITapGestureRecognizer *tapSelfView =
     [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -162,6 +99,16 @@
     draggingView.center = newCenter;
     [self.draggingViews addObject:draggingView];
     [self.view addSubview:draggingView];
+    
+    UIPanGestureRecognizer *pan =
+    [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handlePan:)];
+    [draggingView addGestureRecognizer:pan];
+    
+    UITapGestureRecognizer *tap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleTap:)];
+    [draggingView addGestureRecognizer:tap];
 }
 
 @end
